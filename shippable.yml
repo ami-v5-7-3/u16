@@ -1,6 +1,17 @@
 language: python
 
+runtime:
+  nodePool: dynamic__x86_64__Ubuntu_14_04__c4_large 
+  
 build:
-  ci:   
-    - python --version 
+  pre_ci_boot:
+    image_name: drydock/u14
+    image_tag: v5.7.3
+    pull: true
     
+  ci:   
+    - python --version
+    - EXPECTED_DOCKER_VERSION="1.13.0"
+    - |
+      [ $(docker version --format {{.Server.Version}}) == "$EXPECTED_DOCKER_VERSION" ] 
+ 
